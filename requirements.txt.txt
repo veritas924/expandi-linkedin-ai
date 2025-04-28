@@ -1,0 +1,6 @@
+Flask
+openai
+requests
+google-search-results
+python-dotenv
+gunicorn
