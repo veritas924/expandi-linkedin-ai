@@ -20,12 +20,12 @@ app = Flask(__name__)
 def receive_lead():
     try:
         data = request.json
-        first_name = data.get('firstName')
-        last_name = data.get('lastName')
-        linkedin_url = data.get('linkedinUrl')  # optional if you want, we mainly scrape using name
+        first_name = data.get('first_name')  # from Expandi payload
+	    last_name = data.get('company_name') or "Professional"  # fallback if missing
+	    linkedin_url = data.get('profile_link')  # from Expandi payload
 
-        if not (first_name and last_name):
-            return jsonify({"error": "Missing first name or last name"}), 400
+        if not (first_name and linkedin_url):
+    	return jsonify({"status": "Webhook received, but missing essential fields"}), 200
 
         # Step 1: Enrich LinkedIn public info
         title, about_section = scrape_linkedin_profile(first_name, last_name)
